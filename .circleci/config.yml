@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   ruby: circleci/ruby@1.1.0
   node: circleci/node@2
+  heroku: circleci/heroku@1.2.6
 
 jobs:
   build:
@@ -45,7 +46,7 @@ jobs:
           command: bundle exec rails db:schema:load --trace
       # Run rspec in parallel
       - ruby/rspec-test
-      - ruby/rubocop-check
+      - ruby/rubocop-check  
 
 workflows:
   version: 2
@@ -55,4 +56,9 @@ workflows:
       - test:
           requires:
             - build
-
+      - heroku/deploy-via-git:
+          requires:
+            - build # only run deploy-via-git job if the build job has completed
+          filters:
+            branches:
+              only: master # only run deploy-via-git job on master branch
