@@ -55,11 +55,11 @@ workflows:
       - build
       - test:
           requires:
-            - build
-            - test
+            - build            
       - heroku/deploy-via-git:
           requires:
             - build # only run deploy-via-git job if the build job has completed
+            - test
           filters:
             branches:
               only: master # only run deploy-via-git job on master branch
