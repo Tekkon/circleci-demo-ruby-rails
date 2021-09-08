@@ -56,6 +56,7 @@ workflows:
       - test:
           requires:
             - build
+            - test
       - heroku/deploy-via-git:
           requires:
             - build # only run deploy-via-git job if the build job has completed
